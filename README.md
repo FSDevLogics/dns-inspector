@@ -1,6 +1,6 @@
-# CLI App - DNS Lookup
+# DNS Inspector (CLI App)
 
-Uma aplicação de linha de comando (CLI) desenvolvida em Go para realizar consultas rápidas de endereços IP e servidores de nome (DNS) de domínios na internet.
+Uma aplicação de linha de comando (CLI) desenvolvida em Go para realizar consultas rápidas e avançadas de endereços IP e registros DNS de domínios na internet.
 
 ## 🚀 Recursos
 
@@ -20,8 +20,8 @@ Uma aplicação de linha de comando (CLI) desenvolvida em Go para realizar consu
 
 1. Clone o repositório:
 ```bash
-git clone [https://github.com/FSDevLogics/ip-server-cli](https://github.com/FSDevLogics/ip-server-cli)
-cd ip-server-cli
+git clone [https://github.com/FSDevLogics/dns-inspector.git](https://github.com/FSDevLogics/dns-inspector.git)
+cd dns-inspector
 
 ```
 
