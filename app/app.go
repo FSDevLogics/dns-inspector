@@ -39,6 +39,18 @@ func Create() *cli.App {
 			Flags:  flags,                                     // Vincula a mesma flag "--host"
 			Action: searchServer,                              // Função que será disparada ao usar este comando
 		},
+		{
+			Name:   "mx",                                      // Comando para buscar Mail Exchange
+			Usage:  "Busca os registros de troca de e-mail (MX) de um domínio", // O que o comando faz
+			Flags:  flags,                                     // Reaproveita a mesma flag "--host"
+			Action: searchMX,                                  // Aponta para a nossa nova função searchMX
+		},
+		{
+			Name:   "txt",                                     // Comando para buscar registros de Texto
+			Usage:  "Busca os registros de texto (TXT) de um domínio (útil para auditoria SPF/DMARC)",
+			Flags:  flags,                                     // Reaproveita a mesma flag "--host"
+			Action: searchTXT,                                 // Aponta para a nossa nova função searchTXT
+		},
 	}
 
 	// Retorna o aplicativo pronto e configurado para o arquivo main.go
@@ -80,6 +92,52 @@ func searchServer(c *cli.Context) error {
 	// Como a variável 'server' é uma struct, acessamos a propriedade '.Host' para pegar o nome
 	for _, server := range servers {
 		fmt.Println(server.Host)
+	}
+
+	return nil // Sucesso
+}
+
+// searchMX consulta os servidores responsáveis por receber e-mails no domínio.
+// É muito útil para descobrir qual provedor de e-mail a empresa utiliza (Google, Microsoft, etc).
+func searchMX(c *cli.Context) error {
+	// Pega o valor em texto (String) associado à flag "host"
+	host := c.String("host")
+
+	// net.LookupMX faz a consulta DNS pedindo os registros Mail Exchange (MX)
+	mxRecords, err := net.LookupMX(host)
+	if err != nil {
+		return err // Repassa o erro caso o domínio não exista ou não tenha MX configurado
+	}
+
+	// O retorno é uma lista de structs do tipo MX.
+	// Cada registro MX possui um "Host" (o endereço do servidor) e um "Pref" (a prioridade).
+	// Servidores com prioridade menor (ex: 10) recebem os e-mails antes dos de prioridade maior (ex: 50).
+	for _, mx := range mxRecords {
+		// Printf permite formatar a string de saída.
+		// %s é substituído pelo nome do servidor (texto) e %d pela prioridade (número inteiro).
+		fmt.Printf("Servidor de E-mail: %s | Prioridade: %d\n", mx.Host, mx.Pref)
+	}
+
+	return nil // Sucesso
+}
+
+// searchTXT consulta os registros de texto (TXT) de um domínio.
+// Muito utilizado por equipes de segurança e infraestrutura para validar regras de anti-spam (SPF, DKIM, DMARC)
+// e comprovar a titularidade de domínios em serviços Cloud (AWS, Google Console).
+func searchTXT(c *cli.Context) error {
+	// Pega o valor da flag "host"
+	host := c.String("host")
+
+	// net.LookupTXT busca todas as strings de texto associadas ao domínio no DNS
+	txtRecords, err := net.LookupTXT(host)
+	if err != nil {
+		return err // Repassa erros caso a consulta falhe
+	}
+
+	// O retorno é uma lista contendo todos os textos encontrados.
+	// Um domínio geralmente tem vários registros TXT independentes.
+	for _, txt := range txtRecords {
+		fmt.Println(txt) // Imprime cada registro TXT em uma nova linha
 	}
 
 	return nil // Sucesso
