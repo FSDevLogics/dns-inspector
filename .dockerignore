@@ -1,0 +1,28 @@
+# Git
+.git
+.gitignore
+
+# Binários e arquivos compilados localmente
+# Evita que um binário compilado no seu Mac/Windows vá para o container Linux
+cli_app
+*.exe
+*.test
+bin/
+out/
+
+# IDEs e Editores de texto
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Arquivos de ambiente e variáveis secretas
+.env
+*.local
+
+# Arquivos temporários e de Sistema Operacional
+.DS_Store
+Thumbs.db
+
+# Ignorar a pasta vendor (se você usa), pois o Docker fará o download das dependências
+vendor/

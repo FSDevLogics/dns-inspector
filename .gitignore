@@ -1,0 +1,51 @@
+# Binários e arquivos compilados
+cli_app
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+*.cgo1.go
+*.cgo2.c
+_cgo_defun.c
+_cgo_gotypes.go
+_cgo_export.*
+
+# Pastas de build locais
+bin/
+build/
+out/
+
+# Arquivos de teste e cobertura (coverage)
+coverage.txt
+coverage.out
+profile.out
+
+# Arquivos temporários e de Sistema Operacional
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Configurações de IDEs e Editores de texto
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# Arquivos de variáveis de ambiente/secretos
+.env
+.env.*
+!.env.example
+
+# Dependências (Vendor)
+# O padrão no Go atual é usar Go Modules (go.mod/go.sum) e não versionar o código de terceiros.
+vendor/
